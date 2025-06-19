@@ -3,7 +3,7 @@ package com.sistema_venta_06.grupo06.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,39 +20,39 @@ import com.sistema_venta_06.grupo06.service.ProductoService;
 @RequestMapping("/api/productos")
 public class ProductoController {
 	@Autowired
-private ProductoService productoService;
- 
- @GetMapping
-@PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
-    public List<Producto> listarProductos() {
-        return productoService.listarTodos();
-    }
+	private ProductoService productoService;
 
-    // Obtener un producto por ID
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
-    public Producto obtenerPorId(@PathVariable Long id) {
-        return productoService.buscarPorId(id);
-    }
+	@GetMapping
+	@PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
+	public List<Producto> listarProductos() {
+		return productoService.listarTodos();
+	}
 
-    // Crear producto - solo el administrador
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public Producto crearProducto(@RequestBody Producto producto) {
-        return productoService.guardar(producto);
-    }
+	// Obtener un producto por ID
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
+	public Producto obtenerPorId(@PathVariable Long id) {
+		return productoService.buscarPorId(id);
+	}
 
-    // actualizar solo el administrador
-    @PutMapping("/{id}")
-@PreAuthorize("hasRole('ADMIN')")
-public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
-        return productoService.actualizar(id, producto);
-    }
+	// Crear producto - solo el administrador
+	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
+	public Producto crearProducto(@RequestBody Producto producto) {
+		return productoService.guardar(producto);
+	}
 
-    // Eliminar producto prioridad al admin
-    @DeleteMapping("/{id}")
- @PreAuthorize("hasRole('ADMIN')")
-    public void eliminarProducto(@PathVariable Long id) {
-        productoService.eliminar(id);
-    }
+	// actualizar solo el administrador
+	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
+		return productoService.actualizar(id, producto);
+	}
+
+	// Eliminar producto prioridad al admin
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public void eliminarProducto(@PathVariable Long id) {
+		productoService.eliminar(id);
+	}
 }
