@@ -50,6 +50,10 @@ public class Usuario {
         this.roles = roles;
     }
 
+    public Usuario() {
+
+    }
+
     public Long getId() {
         return id;
     }
