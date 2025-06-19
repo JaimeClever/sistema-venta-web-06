@@ -1,7 +1,7 @@
 package com.sistema_venta_06.grupo06.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,11 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Getter
-@Setter
+
 public class Usuario {
 
 

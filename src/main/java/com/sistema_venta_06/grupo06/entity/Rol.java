@@ -1,16 +1,12 @@
 package com.sistema_venta_06.grupo06.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 
 @Entity
 @Table(name = "roles")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+
 public class Rol {
 
     @Id
