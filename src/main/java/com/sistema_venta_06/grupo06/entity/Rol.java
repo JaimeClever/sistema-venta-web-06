@@ -24,4 +24,28 @@ public class Rol {
     public enum NombreRol {
         ADMIN, VENDEDOR
     }
+
+    public Rol() {
+    }
+
+    public Rol(Long id, NombreRol nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public NombreRol getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(NombreRol nombre) {
+        this.nombre = nombre;
+    }
 }

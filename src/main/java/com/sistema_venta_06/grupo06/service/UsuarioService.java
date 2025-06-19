@@ -6,6 +6,8 @@ import com.sistema_venta_06.grupo06.entity.Usuario;
 import com.sistema_venta_06.grupo06.repository.RolRepository;
 import com.sistema_venta_06.grupo06.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UsuarioService {
@@ -33,4 +35,47 @@ public class UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
+
+    // ahora creamos el metodo para agregar vendedor que solo agregara el Admin
+    public Usuario registrarVendedor(UsuarioDTO dto) {
+        // Obtener el usuario autenticado
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        Usuario admin = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
+
+        // Verificar si tiene rol ADMIN
+        boolean esAdmin = admin.getRoles().stream()
+                .anyMatch(rol -> rol.getNombre() == Rol.NombreRol.ADMIN);
+
+        if (!esAdmin) {
+            throw new RuntimeException("Solo el administrador puede registrar vendedores");
+        }
+
+        // Validar si ya existe el username
+        if (usuarioRepository.existsByUsername(dto.getUsername())) {
+            throw new RuntimeException("Usuario ya registrado");
+        }
+
+        // Crear vendedor
+        Usuario vendedor = new Usuario();
+        vendedor.setUsername(dto.getUsername());
+        vendedor.setPassword(passwordEncoder.encode(dto.getPassword()));
+        vendedor.setNombres(dto.getNombres());
+
+        Rol rolVendedor = rolRepository.findByNombre(Rol.NombreRol.VENDEDOR)
+                .orElseThrow(() -> new RuntimeException("Rol VENDEDOR no existe"));
+        vendedor.getRoles().add(rolVendedor);
+
+        return usuarioRepository.save(vendedor);
+    }
+
+
 }
